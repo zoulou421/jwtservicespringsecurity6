@@ -4,6 +4,7 @@ import com.formationkilo.jwtservicespringsecurity6.config.security.entities.AppR
 import com.formationkilo.jwtservicespringsecurity6.config.security.entities.AppUser;
 import com.formationkilo.jwtservicespringsecurity6.config.security.repository.IAppRoleRepository;
 import com.formationkilo.jwtservicespringsecurity6.config.security.repository.IAppUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,18 @@ public class AccountServiceImpl implements IAccountService{
     private IAppUserRepository appUserRepository;
     private IAppRoleRepository appRoleRepository;
 
-    public AccountServiceImpl(IAppUserRepository appUserRepository, IAppRoleRepository appRoleRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    public AccountServiceImpl(IAppUserRepository appUserRepository, IAppRoleRepository appRoleRepository, PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.appRoleRepository = appRoleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public AppUser addNewUser(AppUser appUser) {
+        String pwd= appUser.getPassword();
+        appUser.setPassword(passwordEncoder.encode(pwd));
         return appUserRepository.save(appUser);
     }
 

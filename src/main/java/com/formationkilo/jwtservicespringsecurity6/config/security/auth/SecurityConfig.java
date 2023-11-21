@@ -1,5 +1,6 @@
 package com.formationkilo.jwtservicespringsecurity6.config.security.auth;
 
+import lombok.Builder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,9 +39,11 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                );
+                        //.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll(
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll()
+                        //.requestMatchers(AntPathRequestMatcher.antMatcher("/listUsers/**")).hasRole("USER")
 
+                );
 
         return httpSecurity.build();
     }
